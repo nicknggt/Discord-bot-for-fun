@@ -1,8 +1,8 @@
 # imports:
 import asyncio
 import packages_needed
-is_install_package = False
-if (is_install_package):
+need_install_package = True
+if (need_install_package):
   packages_needed.install_packages()
 import discord
 import random
