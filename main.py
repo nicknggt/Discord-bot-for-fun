@@ -3,7 +3,8 @@ import asyncio
 import packages_needed
 need_install_package = True
 if (need_install_package):
-  packages_needed.install_packages()
+  packages_needed.pip_install("discord.py")
+  packages_needed.pip_install("flask")
 import discord
 import random
 import os
@@ -115,9 +116,10 @@ async def user_id(ctx, *, input_name:discord.User):
   user_avatar = input_name.default_avatar
   await ctx.send(f"User id of {user_name_input}: {member_id}")
 
-
-
-
+# COGS
+# @bot.command()
+# async def load(ctx, extension):
+#     bot.load_extension()
 
 
 keep_alive.keep_alive()
