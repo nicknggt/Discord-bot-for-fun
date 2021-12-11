@@ -133,9 +133,9 @@ async def unload(ctx, extension):
 async def reload(ctx, extension):
     bot.unload_extension(f'cogs.{extension}')
     bot.load_extension(f'cogs.{extension}')
-    
-    
-    
+    await ctx.send(f"{extension} is reloaded!")
+
+
 cogs_folder = './cogs'
 
 for filename in os.listdir(cogs_folder):

@@ -8,7 +8,7 @@ class Example(commands.Cog): # this class inherits commands.Cog
     
     # Constructor:
     def __init__(self, client):
-        self.client = bot
+        self.client = client
     
     # Events
     @commands.Cog.listener() # This decoration allows to create event in COGS
