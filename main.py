@@ -7,7 +7,7 @@ if (need_install_package):
   packages_needed.pip_install("flask")
 import discord
 import random
-import os
+import os # (For loading all COGS extension module)
 from discord.ext import commands
 import keep_alive
 #-------------------------------
@@ -20,11 +20,11 @@ print('Input token:')
 bot_token_id = input()
 
 
-
-@bot.event
-async def on_ready(): # Put bot in ready state
-    print('Bot is ready.')
-    print('Login as {0.user}'.format(bot))
+# This function is inside cogs folder
+# @bot.event
+# async def on_ready(): # Put bot in ready state
+#     print('Bot is ready.')
+#     print('Login as {0.user}'.format(bot))
 
 # Welcome message when members join a server:
 @bot.event
@@ -98,9 +98,9 @@ async def ban(ctx, user_to_ban : discord.Member, *, the_reason = None):
 
 @bot.command()
 async def unban(ctx, *, unban_member):
-  banned_users = await ctx.guild.bans() # get list of ban entries in the server
   member_name, member_discriminator = unban_member.split('#')
-
+  
+  banned_users = await ctx.guild.bans() # get list of ban entries in the server
   for ban_entry in banned_users:
     user_to_unban = ban_entry.user
 
@@ -117,10 +117,31 @@ async def user_id(ctx, *, input_name:discord.User):
   await ctx.send(f"User id of {user_name_input}: {member_id}")
 
 # COGS
-# @bot.command()
-# async def load(ctx, extension):
-#     bot.load_extension()
+# Load COGS' extension command:
+@bot.command()
+async def load(ctx, extension):
+    bot.load_extension(f'cogs.{extension}') # Go into 'cogs' folders and load all .py extension
+    await ctx.send(f"{extension} cog is loaded!")
 
+# Unload COGS' extension command:
+@bot.command()
+async def unload(ctx, extension):
+    bot.unload_extension(f'cogs.{extension}')
+    await ctx.send(f"Unload {extension} cog!")
+
+# Reload COGS (to refresh it)!
+async def reload(ctx, extension):
+    bot.unload_extension(f'cogs.{extension}')
+    bot.load_extension(f'cogs.{extension}')
+    
+    
+    
+cogs_folder = './cogs'
+
+for filename in os.listdir(cogs_folder):
+    # Loop all files in that cogs_folder directory:
+    if filename.endswith('.py'): # All files end with filetype '.py'
+        bot.load_extension(f'cogs.{filename[:-3]}') # Load cogs file but don't take ".py" as its name
 
 keep_alive.keep_alive()
 bot.run(bot_token_id, bot=True, reconnect=True)
